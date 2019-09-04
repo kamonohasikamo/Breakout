@@ -23,6 +23,16 @@
 			ctx.fillStyle = "#FF0000";
 			ctx.fill();
 			ctx.closePath();
+
+			ctx.beginPath();
+			// arcで丸のオブジェクトを生成
+			// 円の中心座標240,160に半径20の円を
+			// 開始角度と終了角度をラジアンで
+			// 描く方向(falseは時計回り)
+			ctx.arc(240, 160, 20, 0, Math.PI * 2, false);
+			ctx.fillStyle = "green";
+			ctx.fill();
+			ctx.closePath();
 		</script>
 	</body>
 </html>
