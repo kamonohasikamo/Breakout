@@ -33,6 +33,15 @@
 			ctx.fillStyle = "green";
 			ctx.fill();
 			ctx.closePath();
+
+			ctx.beginPath();
+			// rectで四角形のオブジェクトを生成
+			// 左上：160, 上端から10のところに幅100、高さ40の大きさを生成
+			ctx.rect(160, 10, 100, 40);
+			// 枠だけ青色に塗ることも可能
+			ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";
+			ctx.stroke();
+			ctx.closePath();
 		</script>
 	</body>
 </html>
