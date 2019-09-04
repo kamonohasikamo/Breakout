@@ -15,33 +15,23 @@
 			var canvas = document.getElementById("myCanvas");
 			// 2D描画コンテキストを保存する変数
 			var ctx = canvas.getContext("2d");
+
+			var ball_x = canvas.width / 2;
+			var ball_y = canvas.height - 30;
+			var dx = 2;
+			var dy = -2;
 			
-			ctx.beginPath();
-			// rectで四角形のオブジェクトを生成
-			// 左上：20, 上端から40のところに幅50、高さ50の大きさを生成
-			ctx.rect(20, 40, 50, 50);
-			ctx.fillStyle = "#FF0000";
-			ctx.fill();
-			ctx.closePath();
-
-			ctx.beginPath();
-			// arcで丸のオブジェクトを生成
-			// 円の中心座標240,160に半径20の円を
-			// 開始角度と終了角度をラジアンで
-			// 描く方向(falseは時計回り)
-			ctx.arc(240, 160, 20, 0, Math.PI * 2, false);
-			ctx.fillStyle = "green";
-			ctx.fill();
-			ctx.closePath();
-
-			ctx.beginPath();
-			// rectで四角形のオブジェクトを生成
-			// 左上：160, 上端から10のところに幅100、高さ40の大きさを生成
-			ctx.rect(160, 10, 100, 40);
-			// 枠だけ青色に塗ることも可能
-			ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";
-			ctx.stroke();
-			ctx.closePath();
+			function draw() {
+				ctx.beginPath();
+				ctx.arc(ball_x, ball_y, 10, 0, Math.PI*2);
+				ctx.fillStyle = "#0095DD";
+				ctx.fill();
+				ctx.closePath();
+				ball_x += dx;
+				ball_y += dy;
+			}
+			// draw関数が10msごとに実行される
+			setInterval(draw, 10);
 		</script>
 	</body>
 </html>
