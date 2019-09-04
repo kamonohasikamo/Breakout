@@ -9,7 +9,7 @@
 		</style>
 	</head>
 	<body>
-		<canvas id="myCanvas" width="400" height="320"></canvas>
+		<canvas id="myCanvas" width="500" height="500"></canvas>
 		<script>
 			// canvas要素への参照
 			var canvas = document.getElementById("myCanvas");
@@ -37,6 +37,69 @@
 			//=========================================
 			var isOnPressRight = false;
 			var isOnPressLeft = false;
+
+			//=========================================
+			// Block Definition
+			//=========================================
+			var blockRowCount = 3;
+			var blockColumnCount = 5;
+			var blockWidth = 75;
+			var blockHeight = 20;
+			var blockPadding = 10;
+			var blockOffsetTop = 30;
+			var blockOffsetLeft = 30;
+			var blocks = [];
+			for(var i = 0; i < blockColumnCount; i++) {
+				blocks[i] = [];
+				for(var j = 0; j < blockRowCount; j++) {
+					blocks[i][j] = { x: 0, y: 0, status: 1};
+				}
+			}
+
+			//=========================================
+			// Block衝突検出処理
+			//=========================================
+			function blockCollisionJudgment() {
+				for (var i = 0; i < blockColumnCount; i++) {
+					for (var j = 0; j < blockRowCount; j++) {
+						/*
+							当たり判定処理
+							・ボールのx座標がブロックのx座標より大きい
+							・ボールのx座標がブロックのx座標とその幅の和より小さい
+							・ボールのy座標がブロックのy座標より大きい
+							・ボールのy座標がブロックのy座標とその高さの和より小さい
+						*/
+						var checkBlock = blocks[i][j];
+						if (checkBlock.status == 1) {
+							if (ball_x > checkBlock.x
+							&&  ball_x < checkBlock.x + blockWidth
+							&&  ball_y > checkBlock.y
+							&&  ball_y < checkBlock.y + blockHeight) {
+								dy = -dy;
+								checkBlock.status = 0;
+							}
+						}
+					}
+				}
+			}
+
+			function drawBlocks() {
+				for (var i = 0; i < blockColumnCount; i++) {
+					for (var j = 0; j < blockRowCount; j++) {
+						if (blocks[i][j].status == 1) {
+							var blockX = (i * (blockWidth + blockPadding)) + blockOffsetLeft;
+							var blockY = (j * (blockHeight + blockPadding)) + blockOffsetTop;
+							blocks[i][j].x = blockX;
+							blocks[i][j].y = blockY;
+							ctx.beginPath();
+							ctx.rect(blockX, blockY, blockWidth, blockHeight);
+							ctx.fillStyle = "#0095DD";
+							ctx.fill();
+							ctx.closePath();
+						}
+					}
+				}
+			}
 
 			function OnPressKey(e) {
 				if (e.key == "Right" || e.key == "ArrowRight") {
@@ -75,7 +138,9 @@
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 				drawBall();
+				drawBlocks();
 				drawPaddle();
+				blockCollisionJudgment();
 
 				// 跳ね返りの判定
 				if (ball_y + dy < ballRadius) {
