@@ -9,7 +9,7 @@
 		</style>
 	</head>
 	<body>
-		<canvas id="myCanvas" width="500" height="500"></canvas>
+		<canvas id="myCanvas" width="500" height="480"></canvas>
 		<script>
 			// canvas要素への参照
 			var canvas = document.getElementById("myCanvas");
@@ -57,6 +57,24 @@
 			}
 
 			//=========================================
+			// score Definition
+			//=========================================
+			var gameScore = 0;
+
+			//=========================================
+			// LevelDesign Definition
+			//=========================================
+			var LevelDesign = 1;
+			var firstUpFlag = false;
+			var secondUpFlag = false;
+
+			function drawGameScore() {
+				ctx.font = "16px Arial";
+				ctx.fillStyle = "black";
+				ctx.fillText("Score: " + gameScore, 8, 20);
+			}
+
+			//=========================================
 			// Block衝突検出処理
 			//=========================================
 			function blockCollisionJudgment() {
@@ -77,6 +95,19 @@
 							&&  ball_y < checkBlock.y + blockHeight) {
 								dy = -dy;
 								checkBlock.status = 0;
+								gameScore++;
+								if (gameScore > 5 && firstUpFlag == false) {
+									LevelDesign *= 2;
+									firstUpFlag = true;
+								}
+								if (gameScore > 9 && secondUpFlag == false) {
+									LevelDesign *= 2;
+									secondUpFlag = true;
+								}
+								if (gameScore == blockRowCount * blockColumnCount) {
+									alert("GameClear!\nYOU WIN, CONGRATULATIONS!");
+									document.location.reload();
+								}
 							}
 						}
 					}
@@ -139,6 +170,7 @@
 
 				drawBall();
 				drawBlocks();
+				drawGameScore();
 				drawPaddle();
 				blockCollisionJudgment();
 
@@ -159,8 +191,8 @@
 					dx = -dx
 				}
 
-				ball_x += dx;
-				ball_y += dy;
+				ball_x += dx * LevelDesign;
+				ball_y += dy * LevelDesign;
 
 				// Paddle Moving
 				if (isOnPressRight && paddleX < canvas.width - paddleWidth) {
