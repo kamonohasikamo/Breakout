@@ -32,6 +32,28 @@
 			var paddleWidth = 75;
 			var paddleX = (canvas.width - paddleWidth) / 2;
 
+			//=========================================
+			// Paddle Moving Definition
+			//=========================================
+			var isOnPressRight = false;
+			var isOnPressLeft = false;
+
+			function OnPressKey(e) {
+				if (e.key == "Right" || e.key == "ArrowRight") {
+					isOnPressRight = true;
+				} else if (e.key == "Left" || e.key == "ArrowLeft") {
+					isOnPressLeft = true;
+				}
+			}
+
+			function UpKey(e) {
+				if (e.key == "Right" || e.key == "ArrowRight") {
+					isOnPressRight = false;
+				} else if (e.key == "Left" || e.key == "ArrowLeft") {
+					isOnPressLeft = false;
+				}
+			}
+
 			function drawPaddle() {
 				ctx.beginPath();
 				ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
@@ -49,9 +71,13 @@
 			}
 			
 			function draw() {
+				// clear Ball Trajectory
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
+
 				drawBall();
 				drawPaddle();
+
+				// 跳ね返りの判定
 				if (ball_y + dy < ballRadius || ball_y + dy > canvas.height - ballRadius) {
 					dy = -dy;
 				}
@@ -60,7 +86,22 @@
 				}
 				ball_x += dx;
 				ball_y += dy;
+
+				// Paddle Moving
+				if (isOnPressRight && paddleX < canvas.width - paddleWidth) {
+					paddleX += 7;
+				} else if (isOnPressLeft && paddleX > 0) {
+					paddleX -= 7;
+				}
+
 			}
+
+			// addEventListener 
+			// ボタンが押されたときに発火
+			document.addEventListener("keydown", OnPressKey, false);
+			// addEventListener 
+			// ボタンが離れたときに発火
+			document.addEventListener("keyup", UpKey, false);
 			// draw関数が10msごとに実行される
 			setInterval(draw, 10);
 		</script>
