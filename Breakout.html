@@ -11,7 +11,28 @@
 	<body>
 		<canvas id="myCanvas" width="400" height="320"></canvas>
 		<script>
-		
+			// canvas要素への参照
+			var canvas = document.getElementById("myCanvas");
+			// 2D描画コンテキストを保存する変数
+			var ctx = canvas.getContext("2d");
+
+			var ball_x = canvas.width / 2;
+			var ball_y = canvas.height - 30;
+			var dx = 2;
+			var dy = -2;
+			
+			function draw() {
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				ctx.beginPath();
+				ctx.arc(ball_x, ball_y, 10, 0, Math.PI*2);
+				ctx.fillStyle = "#0095DD";
+				ctx.fill();
+				ctx.closePath();
+				ball_x += dx;
+				ball_y += dy;
+			}
+			// draw関数が10msごとに実行される
+			setInterval(draw, 10);
 		</script>
 	</body>
 </html>
